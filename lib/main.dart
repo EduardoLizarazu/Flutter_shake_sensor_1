@@ -80,28 +80,22 @@ class _MyHomePageState extends State<MyHomePage> {
           Image(
             image: NetworkImage(flagCountry),
           ),
-          Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            SizedBox(
-              height: 15,
-            ),
-            TextFormField(
-              controller: nameFlagCountry,
-              readOnly: true,
-              decoration:
-                  InputDecoration(hintText: "", border: InputBorder.none),
-            ),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  fixedSize: const Size(350, 50),
-                  primary: Colors.grey[900],
-                  shadowColor: Colors.white60,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.transparent)),
-                ),
-                onPressed: getData,
-                child: Text("Press Me!")),
-          ]),
+          TextFormField(
+            controller: nameFlagCountry,
+            readOnly: true,
+            decoration: InputDecoration(hintText: "", border: InputBorder.none),
+          ),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(350, 50),
+                primary: Colors.grey[900],
+                shadowColor: Colors.white60,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: BorderSide(color: Colors.transparent)),
+              ),
+              onPressed: getData,
+              child: Text("Press Me!")),
         ]));
   }
 }
