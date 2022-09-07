@@ -32,20 +32,24 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  TextEditingController nameFlagCountry = TextEditingController();
   int _increase = 0;
+  String flagCountry =
+      "https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg";
   Future<String> getData() async {
     var response = await http.get(Uri.parse("https://restcountries.com/v2/all"),
         headers: {"Accept": "application/json"});
     if (response.statusCode == 200) {
       Map<String, dynamic> map = json.decode(response.body)[_increase];
       String nameCountry = map["name"];
-      String flagCountry = map["flags"]["png"];
+      flagCountry = map["flags"]["png"];
       print(nameCountry);
       print(flagCountry);
       setState(() {
         _increase++;
       });
-      return 'okey';
+      nameFlagCountry.text = nameCountry.toString();
+      return "Okey";
     }
     throw Exception('Failed to load the api');
   }
@@ -58,34 +62,46 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: Column(
-          children: [
-            StreamBuilder<GyroscopeEvent>(
-              stream: SensorsPlatform.instance.gyroscopeEvents,
-              builder: (_, snapshot) {
-                if (snapshot.hasData) {
-                  dx = dx + (snapshot.data!.y * 10);
-                  dy = dy + (snapshot.data!.x * 10);
-                }
-                return Transform.translate(
-                    offset: Offset(dx, dy),
-                    child: const CircleAvatar(
-                      radius: 20,
-                    ));
-              },
+        body: Column(children: [
+          StreamBuilder<GyroscopeEvent>(
+            stream: SensorsPlatform.instance.gyroscopeEvents,
+            builder: (_, snapshot) {
+              if (snapshot.hasData) {
+                dx = dx + (snapshot.data!.y * 10);
+                dy = dy + (snapshot.data!.x * 10);
+              }
+              return Transform.translate(
+                  offset: Offset(dx, dy),
+                  child: const CircleAvatar(
+                    radius: 20,
+                  ));
+            },
+          ),
+          Image(
+            image: NetworkImage(flagCountry),
+          ),
+          Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            SizedBox(
+              height: 15,
+            ),
+            TextFormField(
+              controller: nameFlagCountry,
+              readOnly: true,
+              decoration:
+                  InputDecoration(hintText: "", border: InputBorder.none),
             ),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  fixedSize: Size(350, 50),
+                  fixedSize: const Size(350, 50),
                   primary: Colors.grey[900],
                   shadowColor: Colors.white60,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
-                      side: const BorderSide(color: Colors.transparent)),
+                      side: BorderSide(color: Colors.transparent)),
                 ),
                 onPressed: getData,
-                child: const Text("Press Me!")),
-          ],
-        ));
+                child: Text("Press Me!")),
+          ]),
+        ]));
   }
 }
