@@ -54,6 +54,16 @@ class _MyHomePageState extends State<MyHomePage> {
     throw Exception('Failed to load the api');
   }
 
+  void Aselarador() {
+    accelerometerEvents.listen(
+      (AccelerometerEvent event) {
+        var x = event.x;
+        var y = event.y;
+        var z = event.z;
+      },
+    );
+  }
+
   // Builder
   double dx = 100, dy = 100;
   @override
@@ -68,6 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
             builder: (_, snapshot) {
               if (snapshot.hasData) {
                 dx = dx + (snapshot.data!.y * 10);
+                // print(dx);
+
                 dy = dy + (snapshot.data!.x * 10);
               }
               return Transform.translate(
