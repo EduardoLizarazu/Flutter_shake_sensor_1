@@ -54,15 +54,15 @@ class _MyHomePageState extends State<MyHomePage> {
     throw Exception('Failed to load the api');
   }
 
-  void Aselarador() {
-    accelerometerEvents.listen(
-      (AccelerometerEvent event) {
-        var x = event.x;
-        var y = event.y;
-        var z = event.z;
-      },
-    );
-  }
+  // void Aselarador() {
+  //   accelerometerEvents.listen(
+  //     (AccelerometerEvent event) {
+  //       var x = event.x;
+  //       var y = event.y;
+  //       var z = event.z;
+  //     },
+  //   );
+  // }
 
   // Builder
   double dx = 100, dy = 100;
@@ -77,10 +77,10 @@ class _MyHomePageState extends State<MyHomePage> {
             stream: SensorsPlatform.instance.gyroscopeEvents,
             builder: (_, snapshot) {
               if (snapshot.hasData) {
-                dx = dx + (snapshot.data!.y * 10);
-                // print(dx);
-
-                dy = dy + (snapshot.data!.x * 10);
+                if (snapshot.data!.x >= 1 || snapshot.data!.y >= 1) {
+                  print("I'm moving");
+                  getData();
+                }
               }
               return Transform.translate(
                   offset: Offset(dx, dy),
@@ -97,17 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
             readOnly: true,
             decoration: InputDecoration(hintText: "", border: InputBorder.none),
           ),
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                fixedSize: const Size(350, 50),
-                primary: Colors.grey[900],
-                shadowColor: Colors.white60,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: BorderSide(color: Colors.transparent)),
-              ),
-              onPressed: getData,
-              child: Text("Press Me!")),
         ]));
   }
 }
